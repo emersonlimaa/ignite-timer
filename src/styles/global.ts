@@ -23,4 +23,10 @@ export const GlobalStyle = createGlobalStyle`
     font-weight: 400;
     font-size: 1rem;
   }
+
+  @media (min-width: 768px) {
+    :root {
+    font-size: 62.5%;
+}
+  }
 `
