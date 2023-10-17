@@ -4,21 +4,19 @@ import {  HomeContainer,
           StopCountdownButton
         } from './styles';
 
-import { createContext, useState } from 'react';
+import { useContext } from 'react';
 import { NewCycleForm } from './components/NewCycleForm';
 import { Countdown } from './components/Countdown';
 import * as zod from 'zod';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, FormProvider } from 'react-hook-form';
+import { CyclesContext } from '../../contexts/CyclesContext';
 
 
 
 
 
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
-
-
-export const CyclesContext = createContext({} as CycleContextType)
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, 'informe a tarefa'),
@@ -31,6 +29,8 @@ const newCycleFormValidationSchema = zod.object({
 
 export function Home(){
 
+  const {activeCycle, CreateNewCycle, interruptCurrentCycle} = useContext(CyclesContext)
+
   const newCycleForm = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     defaultValues:{
@@ -41,7 +41,10 @@ export function Home(){
   
   const {handleSubmit, watch, reset} = newCycleForm
 
-
+  function handleCreateNewCycle(data: NewCycleFormData){
+      CreateNewCycle(data)
+      reset()
+  }
 
 
   const task = watch('task')
@@ -59,7 +62,7 @@ export function Home(){
         {activeCycle ? (
           <StopCountdownButton 
             type="button"
-            onClick={handleInterruptCycle}
+            onClick={interruptCurrentCycle}
             >
             <HandPalm size={24}/>
             Interromper
