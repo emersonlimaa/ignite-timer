@@ -1,6 +1,6 @@
 import {produce} from 'immer'
 
-import { ActionTypes, interruptCurrentCycleAction } from './actions';
+import { ActionTypes } from './actions';
 
 interface CyclesState{
   cycles: Cycle[]
